@@ -1,0 +1,8 @@
+env example
+tsconfig (STRICT NULL CHECK, STRICT MODE)
+validation env (zod)
+ping pong
+eslint (quotes, semi)
+readme
+use cron lib
+healthcheck

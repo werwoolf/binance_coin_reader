@@ -1,0 +1,64 @@
+version: "3"
+
+volumes:
+  postgres-data:
+
+services:
+  app:
+    restart: always
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ./../app:/app
+      - ./../.env:/app/.env
+    user: "${CURRENT_USER_ID}:${CURRENT_USER_ID}"
+    command: "npm run start"
+#    depends_on:
+#      mongodb:
+#        condition: "service_started"
+#      rabbitmq:
+#        condition: "service_healthy"
+#    healthcheck:
+#      test: "npm run healthcheck"
+#      interval: 10s
+#      timeout: 5s
+#      start_period: 30s
+    networks:
+      - internal
+
+  postgres:
+    image: postgres:16
+    restart: always
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    networks:
+      - internal
+
+#  mongodb:
+#    image: mongo:5
+#    restart: always
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+#      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+#      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+#    ports:
+#      - ${MONGO_CONTAINER_PORT}:${MONGO_INTERNAL_PORT}
+#    volumes:
+#      - mongo-data:/data/db
+#    healthcheck:
+#      test: "echo 'db.stats().ok' | mongo localhost:27017/test --quiet"
+#      interval: 10s
+#      timeout: 5s
+#      start_period: 30s
+#    networks:
+#      - internal
+
+
+networks:
+  internal: { }

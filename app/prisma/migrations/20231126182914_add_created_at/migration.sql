@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "CoinPrice" ALTER COLUMN "createdAt" SET DEFAULT CURRENT_TIMESTAMP;
